@@ -15,12 +15,12 @@ export const useAuth = () => {
 
             if (user) {
                 const docRef = doc(db, "users", user.uid)
+                
                 const docSnap = await getDoc(docRef)
 
                 if (docSnap.exists()) {
-                    setUserProfile(docSnap)
-                }
-                else {
+                    setUserProfile(docSnap.data())
+                } else {
                     setUserProfile(null)
                 }
             }
@@ -31,6 +31,6 @@ export const useAuth = () => {
 
             return () => unsubscribe()
         })
-    },[])
-    return {currentUser,userProfile,loading}
+    }, [])
+    return { currentUser, userProfile, loading }
 }
