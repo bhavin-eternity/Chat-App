@@ -60,9 +60,9 @@ function SearchUsers({ onSelectUser, onClose }) {
                     </svg>
                 </Button>
                 <Input
-                    autoFoucs
+                    autoFocus
                     value={searchTerm}
-                    onchange={handleSearch}
+                    onChange={handleSearch}
                     placeholder="search by username..."
                     className="bg-slate-800 border-0 text-white placeholder:text-slate-500 focus-visible:ring-0" />
 

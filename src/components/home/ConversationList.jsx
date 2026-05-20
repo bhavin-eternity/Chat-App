@@ -3,7 +3,7 @@ import { collection, query, where, onSnapshot, orderBy } from "firebase/firestor
 import { db } from "@/firebase";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { snapshot } from "node:test";
+
 
 
 function ConversationList({ onSelectConversation }) {
