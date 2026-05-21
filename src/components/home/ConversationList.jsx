@@ -35,7 +35,7 @@ function ConversationList({ onSelectConversation }) {
 
     const formatTime = (timestamp) => {
         if (!timestamp) return ""
-        const date = timestamp.todate()
+        const date = timestamp.toDate()
         const now = new Date();
         const diff = date - now;
 

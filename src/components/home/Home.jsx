@@ -17,7 +17,7 @@ function Home() {
     const ids = [currentUser.uid, otherUser.uid].sort()
     const conversationId = ids.join("_")
 
-    await setDocdoc(doc(db, "conversations", conversationId), {
+    await setDoc(doc(db, "conversations", conversationId), {
       participants: [currentUser.uid, otherUser.uid],
       participantProfiles: [
         {
