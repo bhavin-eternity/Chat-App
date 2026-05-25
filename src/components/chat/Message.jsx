@@ -2,7 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 function Message({ message }) {
     const { currentUser } = useAuth()
-    const isMe = message.senderUid === currentUser.uid;
+    const isMe = message.senderUid === currentUser?.uid;
     const formatTime = (timestamp) => {
         if (!timestamp) return ""
         const date = timestamp.toDate()

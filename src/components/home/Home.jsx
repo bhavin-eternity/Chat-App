@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth"
 import NavBar from "../layout/NavBar"
 import SearchUsers from "./SearchUsers"
 import ConversationList from "./ConversationList"
+import ChatRoom from "../chat/ChatRoom"
 
 
 
@@ -52,18 +53,11 @@ function Home() {
 
   if (activeConversation) {
     return (
-      <div className="flex flex-col h-screen bg-slate-950 items-center justify-center">
-        <p className="text-white">
-          Chat with @{activeConversation.otherUser?.username}
-        </p>
-        <button
-          onClick={() => setActiveConversation(null)}
-          className="text-slate-400 text-sm mt-4"
-        >
-          ← back
-        </button>
-
-      </div>
+      <ChatRoom
+        conversationId={activeConversation.id}
+        otherUser={activeConversation.otherUser}
+        onBack={() => setActiveConversation(null)}
+      />
     )
   }
 
