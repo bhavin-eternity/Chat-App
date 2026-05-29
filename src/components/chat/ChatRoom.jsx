@@ -8,13 +8,41 @@ import { useAuth } from "../../hooks/useAuth"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Message from "./Message"
 import SendMessage from "./SendMessage"
-
+import { ref, onValue } from "firebase/database"
+import { rtdb } from "../../firebase"
 
 function ChatRoom({ conversationId, otherUser, onBack }) {
     const { currentUser } = useAuth()
     const [messages, setMessages] = useState([])
     const [loading, setLoading] = useState(true)
     const bottomRef = useRef(null)
+    const [otherOnline, setOtherOnline] = useState(false)
+    const [otherLastSeen, setOtherLastSeen] = useState(null)
+
+
+    const formatLastSeen = (timestamp) => {
+        if (!timestamp) return "offline"
+        const date = new Date(timestamp)
+        const now = new Date()
+        const diff = now - date
+        const mins = Math.floor(diff / 60000)
+        const hours = Math.floor(diff / 3600000)
+
+        if (mins < 1) return "just now"
+        if (mins < 60) return `${mins}m ago`
+        if (hours < 24) return `${hours}h ago`
+        return date.toLocaleDateString()
+    }
+
+    useEffect(() => {
+        if (!otherUser?.uid) return
+        const presenceRef = ref(rtdb, `presence/${otherUser.uid}`)
+        const unsub = onValue(presenceRef, (snapshot) => {
+            setOtherOnline(snapshot.val()?.online || false)
+            setOtherLastSeen(snapshot.val()?.lastSeen || null)
+        })
+        return () => unsub()
+    }, [otherUser?.uid])
 
     useEffect(() => {
         const q = query(collection(
@@ -86,8 +114,13 @@ function ChatRoom({ conversationId, otherUser, onBack }) {
 
                 <div className="flex-1">
                     <p className="text-white text-sm font-medium">@{otherUser?.username}</p>
-                    <p className={`text-xs ${otherUser?.online ? "text-green-400" : "text-slate-500"}`}>
-                        {otherUser?.online ? "online" : "offline"}
+                    <p className={`text-xs ${otherOnline ? "text-green-400" : "text-slate-500"}`}>
+                        {otherOnline
+                            ? "online"
+                            : otherLastSeen
+                                ? `last seen ${formatLastSeen(otherLastSeen)}`
+                                : "offline"
+                        }
                     </p>
                 </div>
             </div>

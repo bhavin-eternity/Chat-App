@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { useAuth } from "./hooks/useAuth"
+import { usePresence } from "./hooks/usePresence"
 import Login from './components/auth/Login'
 import UsernameSetup from "./components/auth/UsernameSetup"
 import Home from "./components/home/Home"
@@ -7,6 +8,7 @@ import Home from "./components/home/Home"
 function App() {
   const { currentUser, userProfile, loading } = useAuth()
 
+  usePresence(currentUser)
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-slate-950">
