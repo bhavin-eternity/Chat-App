@@ -35,6 +35,10 @@ function AddMoment({ onClose, onPosted }) {
     const handleImagePick = (e) => {
         const file = e.target.file[0]
         if (!file) return
+
+        if (preview) {
+            URL.revokeObjectURL(preview)
+        }
         setImageFile(file)
         setPreview(URL.createObjectURL(file))
     }
@@ -180,7 +184,11 @@ function AddMoment({ onClose, onPosted }) {
                                     className="w-full object-cover rounded-2xl"
                                 />
                                 <button
-                                    onClick={() => { setPreview(null); setImageFile(null) }}
+                                    onClick={() => {
+                                        if (preview) {
+                                            URL.revokeObjectURL(preview)
+                                        } setPreview(null); setImageFile(null)
+                                    }}
                                     className="absolute top-2 right-2 bg-black/60 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm"
                                 >
                                     ✕
